@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,78 +6,33 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style1.css'%}">
     <title>Signup Page</title>
 </head>
 
-
 <body>
-    <h1>On signup page</h1>
-    <form action="{% url 'signup' %}" method="post">
-        {% csrf_token %}
-        <table>
-            <tr>
-                <td>
-                    First Name :
-                </td>
-                <td>
-                    <input type="text" name="fname" placeholder="firstname">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Last Name :
-                </td>
-                <td>
-                    <input type="text" name="lname" placeholder="lastname">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Email :
-                </td>
-                <td>
-                    <input type="email" name="email" placeholder="email">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Phone No :
-                </td>
-                <td>
-                    <input type="text" name="phoneno" placeholder="Phone number">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Username :
-                </td>
-                <td>
-                    <input type="text" name="uname" placeholder="username">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Password :
-                </td>
-                <td>
-                    <input type="password" name="pass" placeholder="password">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Password Again :
-                </td>
-                <td>
-                    <input type="password" name="pass2" placeholder="confirm password">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="submit" name="submit" value="Signup!">
-                </td>
-            </tr>
-        </table>
-    </form>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <form class="box" action="{% url 'signup' %}" method="post">
+                        {% csrf_token %}
+                        <h1>Signup</h1>
+                        <p>Please fill up your registration details</p> <input type="text" name="fname"
+                            placeholder="Firstname">
+                        <input type="text" name="lname" placeholder="Lastname">
+                        <input type="email" name="email" placeholder="Email-id">
+                        <input type="text" name="phoneno" placeholder="Phone number">
+                        <input type="textbox" name="address" placeholder="Your Address">
+                        <input type="text" name="uname" placeholder="Choose Username">
+                        <input type="password" name="pass" placeholder="Password">
+                        <input type="password" name="pass2" placeholder="Confirm Password">
+                        <input type="submit" name="submit" value="Signup!" href="#">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

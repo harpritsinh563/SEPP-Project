@@ -11,16 +11,4 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='Customer',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('username', models.CharField(max_length=16)),
-                ('firstname', models.CharField(max_length=255)),
-                ('lastname', models.CharField(max_length=255)),
-                ('email', models.EmailField(max_length=254)),
-                ('phoneno', models.CharField(max_length=10)),
-                ('password', models.CharField(max_length=16)),
-            ],
-        ),
     ]
