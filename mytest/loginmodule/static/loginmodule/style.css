@@ -1,0 +1,12 @@
+h1 {
+  color: purple;
+}
+h2 {
+  color: green;
+}
+p {
+  color: black;
+}
+body {
+  background: white url("images/bg.jpg") no-repeat;
+}

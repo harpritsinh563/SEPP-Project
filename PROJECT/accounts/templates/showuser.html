@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Details</title>
+</head>
+
+<body>
+    {for %d in data}
+    <table>
+        <h3>firstname : {{d.firstname}}</h3>
+        <h3>lastname : {{d.lastname}}</h3>
+        <h3>Email : {{d.email}}</h3>
+    </table>
+    {% endfor %}
+</body>
+
+</html>
