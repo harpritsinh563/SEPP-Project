@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load cart_functionalities %}
+{% block nav %}
+<div align="center" class="mt-4">
+    <img src="{{product.image.url}}" alt="..." height="300px">
+    <table>
+        <tr>
+            <td>
+                <h4>Name : {{product.product_name}}</h4>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h4>Price : {{product.price}}</h4>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h4>Description : {{product.description}}</h4>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                In cart : {{product | is_present_in_cart:request.session.cart}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <form action="/cart_management/add_to_cart" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="productid" value="{{product.id}}">
+                    <input type="submit" class="btn btn-danger" value="Add to Cart"><i class="fas fa-shopping-cart"></i>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="card-footer row nu-gutters p-0 mt-3">
+                    <input type="submit" class="col-2 btn btn-block btn-warning" value="-">
+                    <div class="text-center col ">{{ product|show_quantity:request.session.cart }}</div>
+                    <input type="submit" class="col-2 btn btn-block btn-warning" value="+">
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+{% endblock %}

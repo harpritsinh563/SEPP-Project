@@ -2,15 +2,21 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from .models import Customer
-from product_management.models import Product
+from product_management.views import viewProducts
+from product_management.models import Product, Category
 
 
 def home(request):
-    products = Product.getProducts()
-    return render(request, 'homepage.html', {'products': products})
+    cart = request.session.get('cart')
+    # print("in view home :", cart)
+    # print("Id of cart in home : "+str(id(cart)))
+    if not cart:
+        request.session['cart'] = {}
+    # print("in view home after :", cart)
+    return HttpResponse(viewProducts(request))
 
 
 def login(request):
@@ -19,6 +25,12 @@ def login(request):
             'uname'), password=request.POST.get('pass'))
         if currentuser is not None:
             auth.login(request, currentuser)
+            cartsession = request.session.get('cart')
+            if cartsession:
+                cartsession.clear()
+            else:
+                pass
+            request.session['currentuserid'] = currentuser.id
             return render(request, 'loggedin.html')
         else:
             return render(request, 'invalidlogin.html')

@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% load cart_functionalities %}
 <!DOCTYPE html>
 <html lang="en">
 {% csrf_token %}
@@ -25,73 +27,65 @@
 </style>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" width="100%">
-        <a class="navbar-brand" href="/accounts/home">E-commerce Website</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/accounts/home">Home<span class="sr-only"></span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/accounts/signup">Signup</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/accounts/login">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/product_management/viewproducts">Products</a>
-                </li>
-
-                <!-- <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropdown
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
-                </li> -->
-            </ul>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <!-- <div>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            </div> -->
-        </div>
-    </nav>
+    {% block nav %}
     <div class="container-fluid mt-4">
-        <div class="row mx-auto">
-            {% for p in products %}
-            <div class="card mx-auto mb-6 mt-4" style="width: 20rem;">
-                <img src="{{p.image.url}}" class="card-img-top mt-5" alt="..." height="300px">
-                <div class="card-body">
-                    <h5 class="card-title">{{p.product_name}}</h5>
-                    <p class="card-text">{{p.description}}</p>
-                    <p class="card-text"><strong>₹ {{p.price}}</strong></p>
-                    <a href="#" class="btn btn-danger"><i class="fas fa-shopping-cart"></i> Add to
-                        Cart</a>
+        <div class="row">
+            <div class="col-lg-3 mt-4 mx-auto">
+                <div class="list-group">
+                    {% for c in categories%}
+                    <a href="/?categoryid={{c.id}}" class="list-group-item list-group-item-action">{{c.name}}</a>
+                    {% endfor %}
                 </div>
             </div>
-            {% endfor %}
-        </div>
-        <!-- <h1 align="center">E-commerce Website</h1>
-    <h3 align="center">Welcome to our website</h3> -->
-        <!-- <p>Click <a href="/accounts/signup"> here </a>to signup</p> -->
-        <!-- <p>Click <a href="/product_management/viewproducts"> here </a>to view Products</p> -->
+            <div id='products' class="col-lg-9 mx-auto">
+                <div class="row mx-auto">
+                    {% for p in products %}
+                    <div class="card mx-auto mb-6 mt-4" style="width: 20rem;">
+                        <a href="/product_management/show_product_details/?productid={{p.id}}"><img
+                                src="{{p.image.url}}" class="card-img-top mt-5" alt="..." height="300px">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">{{p.product_name}}</h5>
+                            <p class="card-text">{{p.description}}</p>
+                            <p class="card-text"><strong>₹ {{p.price}}</strong></p>
+                            <a href="/product_management/show_product_details/?productid={{p.id}}"
+                                class="btn btn-primary mb-3">Show More Details</a>
+                            <div class="card-footer nu-gutters p-0 mt-3">
+                                {% if p|is_present_in_cart:request.session.cart %}
+                                <div class="row nu-gutters">
+                                    <form action="/cart_management/remove_from_cart" class="col-2" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="productid" value="{{p.id}}">
+                                        <!-- <input type="hidden" name="reduce_quantity" value="True"> -->
+                                        <input type="submit" value="-" class="btn btn-block btn-warning">
+                                    </form>
+                                    <div class="text-center col">{{ p|show_quantity:request.session.cart }}</div>
+                                    <form action="/cart_management/add_to_cart" class="col-2" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="productid" value="{{p.id}}">
+                                        <input type="hidden" name="increase_quantity" value="True">
+                                        <input type="submit" value="+" class="btn btn-block btn-warning">
+                                    </form>
+                                </div>
+                                {% else %}
+                                <form action="/cart_management/add_to_cart" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="productid" value="{{p.id}}">
+                                    <input type="submit" class="btn btn-danger form-control" value="Add to Cart"><i
+                                        class="fas fa-shopping-cart"></i>
+                                </form>
+                                {% endif %}
+                            </div>
 
+
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
 </body>
 
 </html>

@@ -9,6 +9,11 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    @staticmethod
+    def getCategories():
+        allcategories = Category.objects.all()
+        return allcategories
+
 
 class Product(models.Model):
     product_name = models.CharField(max_length=40)
@@ -26,3 +31,11 @@ class Product(models.Model):
     def getProducts():
         allproducts = Product.objects.all()
         return allproducts
+
+    @staticmethod
+    def get_specific_category_products(categoryid):
+        if categoryid:
+            category_products = Product.objects.filter(category_id=categoryid)
+            return category_products
+        else:
+            return getProducts()
