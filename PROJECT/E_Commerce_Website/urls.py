@@ -23,10 +23,13 @@ from . import settings
 from product_management import urls
 from cart_management import urls
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home),
     path('accounts/', include('accounts.urls')),
     path('product_management/', include('product_management.urls')),
-    path('cart_management/', include('cart_management.urls'))
+    path('cart_management/', include('cart_management.urls')),
+    path('promocodes/', include('promocodes.urls')),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

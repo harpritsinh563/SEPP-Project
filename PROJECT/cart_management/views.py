@@ -4,6 +4,10 @@ from product_management.models import Product
 # Create your views here.
 
 
+def checkout(request):
+    return HttpResponseRedirect('/promocodes/getpromocode')
+
+
 def add_to_cart(request):
     productid = request.POST.get('productid')  # selected product
     cart = request.session.get('cart')

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load promocodes %}
+{% load cart_functionalities %}
+{% block nav %}
+<div class="container mt-4">
+    <h1>Enter a valid promocode to avail some discount</h1>
+    <hr>
+    <muted>You may skip and directly proceed as well if you don't have any promo code</muted>
+    <div class="row">
+        <div class="col">
+            <br>
+            {%if validpc|isnotvalid %}
+            <font color="red">Promo code invalid.Enter a valid one</font-color>
+                <form method="post" action="/promocodes/validatepromocode">
+                    {% csrf_token %}
+                    <input type="text" class="form-control mt-4" style="width:220px;" name="promocode"
+                        placeholder="Enter a valid promocode">
+                    <input type="submit" class="btn btn-outline-primary mt-2" name="submit" value="Redeem">
+                </form>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="finalamount" value="{{cart|getfinalamount:request.session.cart}}">
+                    <input type="submit" class="btn btn-warning mt-2" name="proceed" value="Proceed">
+                </form>
+                {% elif validpc|isvalid %}
+                <h2>Congratulations you have availed {{validpc.discount}}% discount</h2>
+                <h4>Original amount : <strike> ₹{{cart|getfinalamount:request.session.cart}}</strike>
+                </h4>
+                <h4>Discounted Price : ₹{% getdiscountedprice a=validpc products=cart cart=request.session.cart %}</h4>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="finalamount"
+                        value="{% getdiscountedprice a=validpc products=cart cart=request.session.cart %}">
+                    <input type="submit" class="btn btn-warning mt-2" name="proceed" value="Proceed">
+                </form>
+                {% else %}
+                <form method="post" action="/promocodes/validatepromocode">
+                    {% csrf_token %}
+                    <input type="text" class="form-control mt-4" style="width:220px;" name="promocode"
+                        placeholder="Enter a valid promocode">
+                    <input type="submit" class="btn btn-outline-primary mt-2" name="submit" value="Redeem">
+                </form>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="finalamount" value="{{cart|getfinalamount:request.session.cart}}">
+                    <input type="submit" class="btn btn-warning mt-2" name="proceed" value="Proceed">
+                </form>
+
+                {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

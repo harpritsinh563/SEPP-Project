@@ -39,3 +39,14 @@ def is_present_in_cart(product, cart):
                 if int(pid) == product.id:
                     return True
     return False
+
+
+@register.simple_tag(name='getdiscountedprice')
+def getdiscountedprice(a, *args, **kwargs):
+    if a == '-1':
+        return '-1'
+    products = kwargs['products']
+    cart = kwargs['cart']
+    discountpercent = a.discount
+    discount = getfinalamount(products, cart)*discountpercent/100
+    return getfinalamount(products, cart)-discount

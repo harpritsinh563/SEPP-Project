@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load cart_functionalities%}
+{% load promocodes %}
+
 {% block nav %}
 <div class="container">
     <table class="table">
@@ -26,11 +28,11 @@
             {% endfor %}
             <tr>
                 <td colspan="6" align="center">
-                    Final Amount : ₹{{cart|getfinalamount:request.session.cart}}
+                    Total Amount : ₹{{cart|getfinalamount:request.session.cart}}
                 </td>
-
             </tr>
         </tbody>
     </table>
+    <a href="/cart_management/checkout" class="btn btn-outline-primary" align="center">Checkout</a>
 </div>
 {% endblock %}
