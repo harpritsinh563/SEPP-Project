@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load orderfunctionalities %}
+{% block nav %}
+<div class="box">
+    <p>Order Id : {{order.id}}</p>
+    <p>Final Amount to pay : {{order.totalamount}}</p>
+    <p>Delivery by : {{order.expected_delivery}}</p>
+    {% if order.payment_type|is_offline_payment %}
+    <p>Hand-over the total amount in cash to our delivery boy.</p>
+    <p>Thank You for shopping with us.</p>
+    {% else %}
+    <a href="/orderhandling/completepayment" class="btn btn-primary" btn-lg btn-block>Proceed to online payment</a>
+    {% endif %}
+</div>
+{% endblock %}

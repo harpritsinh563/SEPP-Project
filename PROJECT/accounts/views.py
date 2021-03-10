@@ -11,11 +11,9 @@ from product_management.models import Product, Category
 
 def home(request):
     cart = request.session.get('cart')
-    # print("in view home :", cart)
-    # print("Id of cart in home : "+str(id(cart)))
+    # When the homepage will be called for the first time.Session for the cart will be created
     if not cart:
         request.session['cart'] = {}
-    # print("in view home after :", cart)
     return HttpResponse(viewProducts(request))
 
 
@@ -25,13 +23,11 @@ def login(request):
             'uname'), password=request.POST.get('pass'))
         if currentuser is not None:
             auth.login(request, currentuser)
-            cartsession = request.session.get('cart')
-            if cartsession:
-                cartsession.clear()
-            else:
-                pass
-            request.session['currentuserid'] = currentuser.id
-            return render(request, 'loggedin.html')
+
+            # Saving the user id and username into the current session so it can be accessed anywhere on the site and used for tracking the user
+            request.session['currentuser'] = currentuser.id
+            request.session['currentusername'] = currentuser.username
+            return HttpResponseRedirect('/accounts/home')
         else:
             return render(request, 'invalidlogin.html')
     else:
@@ -40,26 +36,30 @@ def login(request):
 
 def logout(request):
     auth.logout(request)
-    return render(request, 'loggedout.html')
+    # When the user clicks signout,all the items in his session should be deleted
+    request.session.clear()
+    return HttpResponseRedirect('/accounts/home')
 
 
 def signup(request):
     if request.method == "POST":
-        postData = request.POST
-
-        # Confirm both passwords are matching
-        if postData.get('pass') == postData.get('pass2'):
+        # Confirm both entered passwords are matching
+        if request.POST.get('pass') == request.POST.get('pass2'):
             try:
-                user = User.objects.get(username=postData.get('uname'))
+                user = User.objects.get(username=request.POST.get('uname'))
+                # Two people cannot have same usernames
                 return HttpResponse("User already exists")
             except User.DoesNotExist:
-                uname = postData.get('uname')
-                pwd = postData.get('pass')
-                user = User.objects.create_user(username=uname, password=pwd, first_name=postData.get('fname'), last_name=postData.get(
-                    'lname'), email=postData.get('email'))
+                uname = request.POST.get('uname')
+                pwd = request.POST.get('pass')
+                user = User.objects.create_user(username=uname, password=pwd, first_name=request.POST.get('fname'), last_name=request.POST.get(
+                    'lname'), email=request.POST.get('email'))
+
+                # Creating a customer object which extends the default user model of django and set additional fields other than
+                # default fields of the django user table
                 newCustomer = Customer()
-                newCustomer.setAdditional(postData.get(
-                    'phoneno'), postData.get('address'), user.id)
+                newCustomer.setAdditional(request.POST.get(
+                    'phoneno'), request.POST.get('address'), user.id)
                 auth.login(request, user)
                 user.save()
                 newCustomer.addCustomer()
@@ -87,11 +87,3 @@ def updateinfo(request):
         current_user = request.user
         current_customer = Customer.objects.get(user_id=current_user.id)
         return render(request, 'update.html', {'customer': current_customer})
-
-
-# def getCurrentUser(request):
-
-    # @login_required(login_url='/login/')
-    # def ViewLoggedInUser(request):
-    #     users_data = Customer.objects.filter(username=request.username)
-    #     return render(request, 'showuser.html', {'data': users_data})

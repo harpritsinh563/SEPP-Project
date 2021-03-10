@@ -17,7 +17,7 @@
                         placeholder="Enter a valid promocode">
                     <input type="submit" class="btn btn-outline-primary mt-2" name="submit" value="Redeem">
                 </form>
-                <form action="" method="post">
+                <form action="/orderhandling/orderform" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="finalamount" value="{{cart|getfinalamount:request.session.cart}}">
                     <input type="submit" class="btn btn-warning mt-2" name="proceed" value="Proceed">
@@ -27,7 +27,7 @@
                 <h4>Original amount : <strike> ₹{{cart|getfinalamount:request.session.cart}}</strike>
                 </h4>
                 <h4>Discounted Price : ₹{% getdiscountedprice a=validpc products=cart cart=request.session.cart %}</h4>
-                <form action="" method="post">
+                <form action="/orderhandling/orderform" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="finalamount"
                         value="{% getdiscountedprice a=validpc products=cart cart=request.session.cart %}">
@@ -40,7 +40,7 @@
                         placeholder="Enter a valid promocode">
                     <input type="submit" class="btn btn-outline-primary mt-2" name="submit" value="Redeem">
                 </form>
-                <form action="" method="post">
+                <form action="/orderhandling/orderform" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="finalamount" value="{{cart|getfinalamount:request.session.cart}}">
                     <input type="submit" class="btn btn-warning mt-2" name="proceed" value="Proceed">

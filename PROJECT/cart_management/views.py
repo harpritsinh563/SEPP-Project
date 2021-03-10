@@ -3,10 +3,18 @@ from django.http import HttpResponse, HttpResponseRedirect
 from product_management.models import Product
 # Create your views here.
 
+# Cart is managed completely with session.
+# All additions,deletions,updations in cart are carried out through sessions only
+
 
 def checkout(request):
-    return HttpResponseRedirect('/promocodes/getpromocode')
-
+    loggedin = request.session.get('currentuser')
+    # This is to check if the user is logged in
+    # User cannot checkout the items without logging in
+    if loggedin:
+        return HttpResponseRedirect('/promocodes/getpromocode')
+    else:
+        return render(request, 'login.html', {'loginrequired': True})
 
 def add_to_cart(request):
     productid = request.POST.get('productid')  # selected product

@@ -1,27 +1,29 @@
 body {
-  margin: auto;
-  padding: 0;
-  font-family: sans-serif;
-  background: linear-gradient(to right, #b92b27, #1565c0);
+  background-image: linear-gradient(to right, #e8dbfc, #f8f9d2);
+  font-family: "Georgia", Times, serif;
 }
-
 .box {
   width: 500px;
   padding: 40px;
   position: center;
   top: 50%;
   left: 50%;
+  bottom: 50%;
   margin: auto;
-  background: #191919;
+  background: #3a3b3c;
   text-align: center;
-  transition: 0.25s;
-  margin-top: 100px;
+  margin-top: 70px;
+  transition: 1s;
   margin-bottom: 100px;
+}
+.box:hover {
+  background: #191919;
 }
 .box input[type="text"],
 .box input[type="textbox"],
 .box input[type="email"],
-.box input[type="password"] {
+.box input[type="password"],
+.box input[type="radio"] {
   border: 0;
   background: none;
   display: block;
@@ -41,6 +43,7 @@ body {
   text-transform: uppercase;
   font-weight: 500;
 }
+
 .box a {
   color: white;
   text-transform: uppercase;
@@ -58,7 +61,15 @@ body {
   width: 300px;
   border-color: #2ecc71;
 }
-
+.box label {
+  float: left;
+  clear: none;
+  display: block;
+  padding: 0px 1em 0px 8px;
+}
+.rad {
+  color: white;
+}
 .box input[type="submit"] {
   border: 0;
   background: none;

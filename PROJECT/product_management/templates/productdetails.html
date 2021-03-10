@@ -21,25 +21,29 @@
         </tr>
         <tr>
             <td>
-                In cart : {{product | is_present_in_cart:request.session.cart}}
-            </td>
-        </tr>
-        <tr>
-            <td>
+                {% if product|is_present_in_cart:request.session.cart %}
+                <div class="row nu-gutters">
+                    <form action="/cart_management/remove_from_cart" class="col-2" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="productid" value="{{product.id}}">
+                        <input type="submit" value="-" class="btn btn-block btn-warning">
+                    </form>
+                    <div class="text-center col">{{ product|show_quantity:request.session.cart }}</div>
+                    <form action="/cart_management/add_to_cart" class="col-2" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="productid" value="{{product.id}}">
+                        <input type="hidden" name="increase_quantity" value="True">
+                        <input type="submit" value="+" class="btn btn-block btn-warning">
+                    </form>
+                </div>
+                {% else %}
                 <form action="/cart_management/add_to_cart" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="productid" value="{{product.id}}">
-                    <input type="submit" class="btn btn-danger" value="Add to Cart"><i class="fas fa-shopping-cart"></i>
+                    <input type="submit" class="btn btn-danger form-control" value="Add to Cart"><i
+                        class="fas fa-shopping-cart"></i>
                 </form>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="card-footer row nu-gutters p-0 mt-3">
-                    <input type="submit" class="col-2 btn btn-block btn-warning" value="-">
-                    <div class="text-center col ">{{ product|show_quantity:request.session.cart }}</div>
-                    <input type="submit" class="col-2 btn btn-block btn-warning" value="+">
-                </div>
+                {% endif %}
             </td>
         </tr>
     </table>

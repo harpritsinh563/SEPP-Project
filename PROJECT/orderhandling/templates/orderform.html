@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block nav %}
+<div>
+    <form class="box" action="/orderhandling/placeorder" method="post" style="width:700px;">
+        {% csrf_token %}
+        <h1>Order</h1>
+        <p> Please enter required details</p>
+        <input type="textbox" name="daddress" placeholder="Enter delivery address" required>
+        <input type="text" name="phone1" placeholder="Enter a phone number" required>
+        <input type="text" name="phone2" placeholder="Enter another phone number">
+        <input type="hidden" name="finalamount" value="{{finalamount}}">
+        <p>Amount to pay is : {{finalamount}}</p>
+        <p>Select a payment type : </p>
+
+
+        <input type="radio" id="COD" name="payment_type" value="COD">
+        <p>COD</p>
+
+        <input type="radio" name="payment_type" value="CreditCard">
+        <p>CreditCard</p>
+        <input type="radio" name="payment_type" value="PayPal">
+        <p>Paypal</p>
+        <input type="radio" name="payment_type" value="Paytm">
+        <p>Paytm</p>
+        <input type="submit" name="submit" value="Place Order!">
+    </form>
+</div>
+{% endblock %}
