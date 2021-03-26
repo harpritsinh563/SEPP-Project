@@ -4,7 +4,7 @@ from django.contrib import auth
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from .models import Customer
+from .models import Customer, Supplier
 from product_management.views import viewProducts
 from product_management.models import Product, Category
 
@@ -87,3 +87,38 @@ def updateinfo(request):
         current_user = request.user
         current_customer = Customer.objects.get(user_id=current_user.id)
         return render(request, 'update.html', {'customer': current_customer})
+
+# Following views are for supplier
+
+# For now :
+# Admin will manually add the supplier from login panel
+# username and password (Login credentials) will be provided to supplier through some external offline communication
+# Offline management team(Nothing to do with website) will generate an supply_order id which will be set into the suppliers pending order id column through admin only
+# Supplier has to just confirm that supply order once he confirms the supply order (After sending all the supplies) the pending_order_status will be set to "Supplied"
+# Will add more functionalities in future releases
+
+
+def supplierlogin(request):
+    if request.method == "POST":
+        currentuser = authenticate(username=request.POST.get(
+            'uname'), password=request.POST.get('pass'))
+        if currentuser is not None:
+            auth.login(request, currentuser)
+            # Saving the user id and username into the current session so it can be accessed anywhere on the site and used for tracking the user
+            request.session['currentuser'] = currentuser.id
+            request.session['currentusername'] = currentuser.username
+            return HttpResponseRedirect('/accounts/supplierdashboard')
+    else:
+        return render(request, 'login.html', {'supplier': True})
+
+
+def dashboard(request):
+    supplier = Supplier.objects.get(user_id=request.user)
+    return render(request, 'supplier.html', {'supplierinfo': supplier})
+
+
+def supply_confirm(request):
+    supplier = Supplier.objects.get(user_id=request.user)
+    supplier.pending_order_status = "Supplied"
+    supplier.save()
+    return HttpResponseRedirect('/accounts/supplierdashboard')

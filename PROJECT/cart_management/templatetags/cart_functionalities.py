@@ -2,7 +2,7 @@ from django import template
 register = template.Library()
 
 
-#This filter is used for getting the quantity of each individual product added into the cart
+# This filter is used for getting the quantity of each individual product added into the cart
 @register.filter(name='show_quantity')
 def show_quantity(product, cart):
     if cart:
@@ -13,7 +13,9 @@ def show_quantity(product, cart):
                     return cart.get(pid)
         return -1
 
-#This filter is used to get a particular products price
+# This filter is used to get a particular products price
+
+
 @register.filter(name='getProductsPrice')
 def getProductsPrice(product, cart):
     totalprice = product.price * show_quantity(product, cart)
