@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Customer, Supplier
 from product_management.views import viewProducts
 from product_management.models import Product, Category
+import re
 
 
 def home(request):
@@ -43,31 +44,62 @@ def logout(request):
 
 def signup(request):
     if request.method == "POST":
+        errors = []
         # Confirm both entered passwords are matching
         if request.POST.get('pass') == request.POST.get('pass2'):
             try:
                 user = User.objects.get(username=request.POST.get('uname'))
                 # Two people cannot have same usernames
-                return HttpResponse("User already exists")
+                already_exist = "User with that username already exists"
+                errors += [already_exist]
+                return render(request, 'signup.html', {'errors': errors, 'errorpresent': True})
             except User.DoesNotExist:
                 uname = request.POST.get('uname')
                 pwd = request.POST.get('pass')
-                user = User.objects.create_user(username=uname, password=pwd, first_name=request.POST.get('fname'), last_name=request.POST.get(
-                    'lname'), email=request.POST.get('email'))
+                # Validating password criteria
 
-                # Creating a customer object which extends the default user model of django and set additional fields other than
-                # default fields of the django user table
-                newCustomer = Customer()
-                newCustomer.setAdditional(request.POST.get(
-                    'phoneno'), request.POST.get('address'), user.id)
-                auth.login(request, user)
-                user.save()
-                newCustomer.addCustomer()
-                request.session['currentuser'] = user.id
-                request.session['currentusername'] = user.username
-                return HttpResponseRedirect('/accounts/home')
+                # Validating length criteria
+                if len(pwd) < 8:
+                    length_error = "Password must be 8 characters in length"
+                    errors += [length_error]
+                # Validating digit criteria
+                contains_digit = bool(re.search(r'\d', pwd))
+                if contains_digit == False:
+                    digit_error = "Password must contain atleast 1 digit"
+                    errors += [digit_error]
+                # Validating alphabets
+                contains_alphabets = bool(re.match('[a-zA-Z\s]+$', pwd))
+                if contains_alphabets == "False":
+                    alpha_error = "Password must contain atleast 1 alphabet"
+                    errors += [alpha_error]
+                # Validating special characters
+                regex = re.compile('[@_!#$%^&*()<>?/\|}{~:]')
+                contains_special = bool(regex.search(pwd))
+                if contains_special == False:
+                    specialchar_error = "Password must contain atleast 1 special character"
+                    errors += [specialchar_error]
+                print(errors)
+                if len(errors) >= 1:
+                    return render(request, 'signup.html', {'errors': errors, 'errorpresent': True})
+                else:
+                    user = User.objects.create_user(username=uname, password=pwd, first_name=request.POST.get('fname'), last_name=request.POST.get(
+                        'lname'), email=request.POST.get('email'))
+
+                    # Creating a customer object which extends the default user model of django and set additional fields other than
+                    # default fields of the django user table
+                    newCustomer = Customer()
+                    newCustomer.setAdditional(request.POST.get(
+                        'phoneno'), request.POST.get('address'), user.id)
+                    auth.login(request, user)
+                    user.save()
+                    newCustomer.addCustomer()
+                    request.session['currentuser'] = user.id
+                    request.session['currentusername'] = user.username
+                    return HttpResponseRedirect('/accounts/home')
         else:
-            return HttpResponse("Passwords do not match")
+            pnm="Both entered passwords do not match"
+            errors+=[pnm]
+            return render(request, 'signup.html', {'errors':errors,'errorpresent':True})
     else:
         return render(request, 'signup.html')
 
