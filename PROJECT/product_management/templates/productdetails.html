@@ -47,5 +47,36 @@
             </td>
         </tr>
     </table>
+
+
 </div>
+<h1>Review Section</h1>
+{% for r in reviews %}
+Review : {{r.review}}
+Rating : {{r.rating}}
+Given by : {{r.given_by}} <br>
+{% endfor %}
+{% if request.session.currentuser %}
+<form action="/product_management/addreview" method="POST">
+    {% csrf_token %}
+    <textarea placeholder="Enter review here" name="review" id="review" rows="4" cols="50"></textarea><br>
+    Give rating on scale of 0<input type="range" id="rating" name="rating" value="0" min="0" max="5">5
+    <br>Your rating : <span id="yourrating" name="yourrating"></span><br>
+    <input type="hidden" name="product" value="{{product}}">
+    <input style="margin:4px;padding:auto;" class="btn btn-primary" type="submit" value="Submit!">
+</form>
+{% else %}
+Please login to add a review
+{% endif %}
+<!-- At current stage I literally don't know how to use javascript but to get my work done I found something similar to my problem on following link -->
+<!-- Reference : https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_js_rangeslider -->
+<!-- I understood what they have done here and I can explain logic but don't know syntax for now -->
+<script>
+    var slider = document.getElementById("rating");
+    var output = document.getElementById("yourrating");
+    output.innerHTML = rating.value;
+    slider.oninput = function () {
+        output.innerHTML = this.value;
+    }
+</script>
 {% endblock %}

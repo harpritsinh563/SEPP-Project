@@ -63,7 +63,9 @@ def signup(request):
                 auth.login(request, user)
                 user.save()
                 newCustomer.addCustomer()
-                return HttpResponse("Thank you for signing up")
+                request.session['currentuser'] = user.id
+                request.session['currentusername'] = user.username
+                return HttpResponseRedirect('/accounts/home')
         else:
             return HttpResponse("Passwords do not match")
     else:

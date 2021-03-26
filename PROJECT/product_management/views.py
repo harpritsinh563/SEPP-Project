@@ -1,5 +1,7 @@
 from django.shortcuts import render
-from .models import Product, Category
+from .models import Product, Category, Review
+from django.http import HttpResponse, HttpResponseRedirect
+from accounts.models import Customer
 # Create your views here.
 
 
@@ -23,4 +25,23 @@ def getcategories(request):
 def show_product_details(request):
     productid = request.GET.get('productid')
     product = Product.objects.get(id=productid)
-    return render(request, 'productdetails.html', {'product': product})
+    reviews = Review.objects.filter(product_id=productid)
+    return render(request, 'productdetails.html', {'product': product, 'reviews': reviews})
+
+
+def addreview(request):
+    if request.method == "POST":
+        ip_review = request.POST.get('review')
+        ip_rating = request.POST.get('rating')
+        ip_product = request.POST.get('product')
+        print('ip review '+str(ip_review)+'\nip_rating' +
+              str(ip_rating)+'\nproduct '+str(ip_product))
+        c_user = request.user
+        print('c_user'+str(c_user))
+        product = Product.objects.get(product_name=ip_product)
+        customer = Customer.objects.get(user_id=c_user.id)
+        review = Review(review=ip_review, rating=ip_rating,
+                        given_by=customer, product=product)
+        review.save()
+        reviews = Review.objects.filter(product_id=product.id)
+        return render(request, 'productdetails.html', {'product': product, 'reviews': reviews})

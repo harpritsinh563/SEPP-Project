@@ -16,6 +16,7 @@ def checkout(request):
     else:
         return render(request, 'login.html', {'loginrequired': True})
 
+
 def add_to_cart(request):
     productid = request.POST.get('productid')  # selected product
     cart = request.session.get('cart')

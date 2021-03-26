@@ -1,5 +1,5 @@
 from django.db import models
-
+from accounts.models import Customer
 # Create your models here.
 
 
@@ -39,3 +39,10 @@ class Product(models.Model):
             return category_products
         else:
             return getProducts()
+
+
+class Review(models.Model):
+    review = models.CharField(max_length=255)
+    given_by = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    rating = models.IntegerField(default=0)
