@@ -45,8 +45,8 @@
                     </li>
                 </ul>
             </div>
-            <form action="#" method="GET" class="d-flex">
-                <input style="width:300px;" class="form-control me-2" type="search" placeholder="Search"
+            <form action="/product_management/searchproduct" method="GET" class="d-flex">
+                <input style="width:200px;" class="form-control me-2" type="search" placeholder="Search"
                     aria-label="Search" name="search" id="search" />
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
@@ -60,8 +60,11 @@
             {% if request.session.currentuser %}
             <a class="navbar-brand" href="#">Welcome,{{request.session.currentusername}}</a>
             &nbsp;&nbsp;&nbsp;
-            <a class="navbar-brand" href="#"> | </a>
+            <a class="navbar-brand" href="#">|</a>
+            <a class="btn btn-primary" href="/accounts/updateinfo" role="button">Update details</a>
             &nbsp;&nbsp;&nbsp;
+            <a class="navbar-brand" href="#"> | </a>
+            &nbsp;
             <a class="btn btn-primary" href="/accounts/logout" role="button">Logout!</a>
             {% else %}
             <a class="btn btn-primary" href="/accounts/supplierlogin" role="button">Supplier Login!</a>

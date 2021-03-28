@@ -55,3 +55,10 @@ def getdiscountedprice(a, *args, **kwargs):
     discountpercent = a.discount
     discount = getfinalamount(products, cart)*discountpercent/100
     return getfinalamount(products, cart)-discount
+
+
+@register.filter(name="in_stock")
+def in_stock(product):
+    if product.inStock == True:
+        return True
+    return False

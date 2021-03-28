@@ -30,7 +30,7 @@ def login(request):
             request.session['currentusername'] = currentuser.username
             return HttpResponseRedirect('/accounts/home')
         else:
-            return render(request, 'invalidlogin.html')
+            return render(request, 'login.html',{'invalidcredentials':True})
     else:
         return render(request, 'login.html')
 

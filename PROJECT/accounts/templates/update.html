@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style1.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'abcd.css'%}">
     <title>Update</title>
 </head>
 
@@ -20,8 +20,8 @@
                         <h1>Update Information!</h1>
                         <p>Change the details which you want to</p>
                         <input type="email" value="{{customer.user.email}}" name="nemail">
-                        <input type="text" name="phoneno" value="{{customer.phoneno}}">
-                        <input type="textbox" name="naddress" value="{{customer.address}}">
+                        <input type="text" name="phoneno" value="{{customer.phoneno}}" placeholder="Phone number">
+                        <input type="textbox" name="naddress" value="{{customer.address}}" placeholder="Addresss">
                         <input type="password" name="pass" placeholder="Current Password">
                         <input type="submit" name="submit" value="Update!" href="#">
                     </form>
@@ -29,50 +29,6 @@
             </div>
         </div>
     </div>
-    <!-- <form action="{% url 'update' %}" method="POST">
-        <h1>Update Information!!</h1>
-        {% csrf_token %}
-        <table>
-            <tr>
-                <td>
-                    New email :
-                </td>
-                <td>
-                    <input type="email" value="{{customer.user.email}}" name="nemail">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    New Phoneno :
-                </td>
-                <td>
-                    <input type="text" name="nphone" value="{{customer.phoneno}}">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    New Address :
-                </td>
-                <td>
-                    <input type="textbox" name="naddress" value="{{customer.address}}">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Confirm password :
-                </td>
-                <td>
-                    <input type="password" name="pass" placeholder="Enter your current password">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="submit" value="update">
-                </td>
-            </tr>
-        </table>
-
-    </form> -->
 </body>
 
 </html>

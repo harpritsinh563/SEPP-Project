@@ -29,6 +29,20 @@ def show_product_details(request):
     return render(request, 'productdetails.html', {'product': product, 'reviews': reviews})
 
 
+def search(request):
+    product_query = request.GET.get('search')
+    products = Product.getProducts()
+    matching_products = []
+    for p in products:
+        if product_query.casefold() in p.product_name.casefold() or product_query.casefold() in p.category.name.casefold() or product_query in p.description.casefold():
+            matching_products.append(p)
+    print('Matching products : '+str(matching_products))
+    if len(matching_products) != 0:
+        return render(request, 'homepage.html', {'products': matching_products,'matchingfound':True})
+    else:
+        return render(request, 'homepage.html', {'productnotfound': True})
+
+
 def addreview(request):
     if request.method == "POST":
         ip_review = request.POST.get('review')

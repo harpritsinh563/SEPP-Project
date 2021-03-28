@@ -4,7 +4,13 @@
 
 <div class="bg">
     <div class="container-fluid">
+        {% if productnotfound %}
+        <h1 align="center">Sorry,no matching products found</h1>
+        {% else %}
         <div class="row">
+            {% if matchingfound %}
+            <h1 style="margin-top: 10px;" align="center">Following matching products found.</h1>
+            {% endif %}
             <div id='products' class="col-lg-10 mx-auto">
                 <div class="row mx-auto">
                     {% for p in products %}
@@ -14,10 +20,13 @@
                         </a>
                         <div class="card-body">
                             <h5 class="card-title">{{p.product_name}}</h5>
-                            <p style="color: black">{{p.description}}</p>
-                            <p class="card-text"><strong>₹ {{p.price}}</strong></p>
+                            <div style="height:40px;margin-bottom:10px;" id="description">
+                                <font style="color: black">{{p.description}}</font>
+                            </div>
+                            <p style="color: black" class="card-text"><strong>₹ {{p.price}}</strong></p>
                             <a href="/product_management/show_product_details/?productid={{p.id}}"
-                                class="btn btn-primary mb-3">Show More Details</a>
+                                class="btn btn-primary mb-2">Show More Details</a>
+                            {% if p|in_stock %}
                             <div class="card-footer nu-gutters p-0 mt-3">
                                 {% if p|is_present_in_cart:request.session.cart %}
                                 <div class="row nu-gutters">
@@ -43,12 +52,19 @@
                                 </form>
                                 {% endif %}
                             </div>
+                            {% else %}
+                            <br><br>
+                            <font style="color:red">
+                                Sorry this product is out of stock
+                            </font>
+                            {% endif %}
                         </div>
                     </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

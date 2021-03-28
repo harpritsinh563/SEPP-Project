@@ -26,6 +26,9 @@
                             <font color="red">You must be logged in to continue further</font>
                             {% endif %}
                             {% csrf_token %}
+                            {% if invalidcredentials %}
+                            <font color="red">Invalid Credentials.<br>Please login again.</font>
+                            {% endif %}
                             <h1>Login</h1>
                             <p> Please enter your Username and password!</p> <input type="text" name="uname"
                                 placeholder="Username"> <input type="password" name="pass" placeholder="Password">
