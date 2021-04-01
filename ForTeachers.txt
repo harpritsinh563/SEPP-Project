@@ -1,6 +1,0 @@
-Respected Teachers,
-There are 2 folders here 1 is mytest which contains all the stuff done during lab hours(SP) for learning purpoe.
-Another folder is PROJECT folder which contains the actual project for SEM-4 SEPP subject.
-Project title : E-Commerce Website
-There are some issues from bhagat's pc while pushing into main branch so we have a created a seperate branch for him called 'bhagat'
-Thank You

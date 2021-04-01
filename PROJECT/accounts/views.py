@@ -30,7 +30,7 @@ def login(request):
             request.session['currentusername'] = currentuser.username
             return HttpResponseRedirect('/accounts/home')
         else:
-            return render(request, 'login.html',{'invalidcredentials':True})
+            return render(request, 'login.html', {'invalidcredentials': True})
     else:
         return render(request, 'login.html')
 
@@ -97,9 +97,9 @@ def signup(request):
                     request.session['currentusername'] = user.username
                     return HttpResponseRedirect('/accounts/home')
         else:
-            pnm="Both entered passwords do not match"
-            errors+=[pnm]
-            return render(request, 'signup.html', {'errors':errors,'errorpresent':True})
+            pnm = "Both entered passwords do not match"
+            errors += [pnm]
+            return render(request, 'signup.html', {'errors': errors, 'errorpresent': True})
     else:
         return render(request, 'signup.html')
 
@@ -142,6 +142,8 @@ def supplierlogin(request):
             request.session['currentuser'] = currentuser.id
             request.session['currentusername'] = currentuser.username
             return HttpResponseRedirect('/accounts/supplierdashboard')
+        else:
+            return HttpResponse('Invalid login')
     else:
         return render(request, 'login.html', {'supplier': True})
 

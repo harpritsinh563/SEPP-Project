@@ -21,11 +21,11 @@
                         {% csrf_token %}
                         {% else %}
                         <form class="box" action="/accounts/login" method="post">
+                            {% csrf_token %}
                             {% endif %}
                             {% if loginrequired %}
                             <font color="red">You must be logged in to continue further</font>
                             {% endif %}
-                            {% csrf_token %}
                             {% if invalidcredentials %}
                             <font color="red">Invalid Credentials.<br>Please login again.</font>
                             {% endif %}
