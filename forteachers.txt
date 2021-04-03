@@ -1,0 +1,6 @@
+Respected Teachers,
+
+There are 2 folders in this repository.1 is "mytest" another is "PROJECT".
+"mytest" contains all lab related work.Main project is in the folder "PROJECT".
+
+Thank You.
